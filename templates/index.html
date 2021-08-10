@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Image Classification</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+        
+        <style>
+            body{
+                background-color: #EEEEEE;
+                font-family: 'Poppins', sans-serif;
+                margin: 1px;
+            }
+            
+            .navbar{
+                overflow: hidden;
+                background-color: #FFFFFF;
+            }
+
+            .navbar a, p{
+                float: left;
+                display: block;
+                color: #000000;
+                text-align: center;
+                padding: 14px 20px;
+                margin: 0px;
+                text-decoration: none;
+            }
+
+            .navbar a.right{
+                float: right;
+            }
+
+            .navbar a:hover{
+                background-color: #EEEEEE;
+                color: #000000;
+            }
+            
+            .row {  
+                display: flex;
+                flex-wrap: nowrap;
+            }
+
+            .rightside{
+                float: right;
+                width: 50%;
+                text-align: center;
+            }
+            
+            .rightside p{
+                width: 80%;
+                background-color: #dffde9;
+                border-radius: 5px;
+                color: #000000  
+              }
+
+            .leftside{
+                float: left;
+                width: 50%;
+                text-align: center;
+            }
+            .top{
+                margin: 40px;
+                padding: 20px;
+                background-color: #FFFFFF;
+                text-align: center;
+            }
+
+            .main {   
+                height: 350px;
+                background-color: white;
+                padding: 20px;
+                margin: 40px;
+            }
+
+            .button {
+                background-color: #4285F4; 
+                border: none;
+                color: white;
+                padding: 10px 60px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 16px 0px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+
+            /* Responsive Layout*/
+            @media screen and (max-width:700px) {
+                .main{
+                    flex-direction: column;
+                }
+                .leftside, .rightside{
+                    width: 100%;
+                }
+            }
+
+            @media screen and (max-width:400px) {
+                .navbar a{
+                    float: none;
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="navbar">
+            <p><b>ClassifyImage</b></p>
+            <a href="#" class="right">Classifier</a>
+            <a href="#" class="right">About</a>
+          </div>
+        
+        <div class="top">  
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <br><br>
+                <button type="submit" id="button" class="button" >Predict</button>
+            </form>
+        </div>
+
+
+        <div class="main">
+            <!-- Prediction-->
+            <h4>Result</h4>
+            {% if image_uri is not None %}
+
+                <div class="leftside">
+                    
+                    <img src="{{ image_uri }}" width="300" height="300">                
+                    <br>
+                           
+                </div>
+                
+                <div class="rightside">
+                    
+                    <p>This seems to be <b>{{predicted_label}}</b></p>
+
+                </div>
+            {% endif %}
+            
+        </div>
+        
+    </body>
+
+    <!-- Display Image after chosing-->
+    
+    <script>
+        function loadFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#output')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+</html>
