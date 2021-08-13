@@ -9,144 +9,134 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
         
         <style>
-            body{
-                background-color: #EEEEEE;
+            * {
                 font-family: 'Poppins', sans-serif;
-                margin: 1px;
-            }
-            
-            .navbar{
-                overflow: hidden;
-                background-color: #FFFFFF;
+                box-sizing: border-box;
             }
 
-            .navbar a, p{
+            /* Create two unequal columns that floats next to each other */
+            .column {
                 float: left;
-                display: block;
-                color: #000000;
-                text-align: center;
-                padding: 14px 20px;
-                margin: 0px;
-                text-decoration: none;
+                padding: 10px;
+                height: 600px; /* Should be removed. Only for demonstration */
             }
 
-            .navbar a.right{
-                float: right;
+            .left {
+                width: 70%;
             }
 
-            .navbar a:hover{
-                background-color: #EEEEEE;
-                color: #000000;
-            }
-            
-            .row {  
-                display: flex;
-                flex-wrap: nowrap;
+            .right {
+                width: 30%;
+                padding-left: 30px;
             }
 
-            .rightside{
-                float: right;
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            .vertical-center {
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
+            }
+
+
+            .center {
+                margin: auto;
                 width: 50%;
-                text-align: center;
-            }
-            
-            .rightside p{
-                width: 80%;
-                background-color: #dffde9;
-                border-radius: 5px;
-                color: #000000  
-              }
-
-            .leftside{
-                float: left;
-                width: 50%;
-                text-align: center;
-            }
-            .top{
-                margin: 40px;
-                padding: 20px;
-                background-color: #FFFFFF;
-                text-align: center;
-            }
-
-            .main {   
-                height: 350px;
-                background-color: white;
-                padding: 20px;
-                margin: 40px;
+                padding: 10px;
             }
 
             .button {
-                background-color: #4285F4; 
+                background-color: #FEE13D;
                 border: none;
-                color: white;
+                color: #000000;
                 padding: 10px 60px;
                 text-align: center;
                 text-decoration: none;
                 display: inline-block;
                 font-size: 16px;
-                margin: 16px 0px;
+                margin: 4px 2px;
                 cursor: pointer;
-                border-radius: 4px;
             }
 
-            /* Responsive Layout*/
-            @media screen and (max-width:700px) {
-                .main{
-                    flex-direction: column;
-                }
-                .leftside, .rightside{
-                    width: 100%;
-                }
+            .text { 
+                font-size: 16px;
+                text-align: center; 
+                background-color: #FAFAFA; 
+                padding: 20px 10px;
             }
 
-            @media screen and (max-width:400px) {
-                .navbar a{
+            @media screen and (max-width: 600px) {
+                .column {
                     float: none;
+                }
+
+                .left {
                     width: 100%;
+                    padding-bottom: 10px;
+                    float: none;
+                }
+
+                .right {
+                    width: 100%;
+                    padding-bottom: 10px;
+                    float: none;
+                }
+
+                .vertical-center {
+                    position: absolute;
+                    transform: translateY(0%);
+                    top: 120%;
+                    margin-top: 10px;
+                }
+                
+                .center{
+                    margin: 0;
                 }
             }
+
         </style>
     </head>
 
     <body>
-        <div class="navbar">
-            <p><b>ClassifyImage</b></p>
-            <a href="#" class="right">Classifier</a>
-            <a href="#" class="right">About</a>
-          </div>
-        
-        <div class="top">  
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form }}
-                <br><br>
-                <button type="submit" id="button" class="button" >Predict</button>
-            </form>
-        </div>
-
-
-        <div class="main">
-            <!-- Prediction-->
-            <h4>Result</h4>
-            {% if image_uri is not None %}
-
-                <div class="leftside">
-                    
-                    <img src="{{ image_uri }}" width="300" height="300">                
-                    <br>
-                           
-                </div>
-                
-                <div class="rightside">
-                    
-                    <p>This seems to be <b>{{predicted_label}}</b></p>
-
-                </div>
-            {% endif %}
+        {% load static %}
+        <div class="row">
+            <div class="column left" style="background-color:#FFFFFF;">
+              <p><b>ClassifyImage.</b></p>
             
-        </div>
-        
+            <div class="center">
+                {% if image_uri is not None %}
+                    <img class="outputImage" src="{{ image_uri }}" width="400" height="400">     
+                    <div class="text">It seems to be <b>{{predicted_label}}</b></div>
+                {% else %} 
+                    <br>
+                    <img class="output" src="{% static 'classifyImage.png' %}" alt="Uploaded image will be shown here" width="500" height="350"/>
+                {% endif %}
+
+                </div>
+            </div>
+
+            <div class="column right" style="background-color:#FAFAFA;">
+                <div class="vertical-center">
+                    <h3>Choose Image to</h3>
+                    <h2><b>CLASSIFY</b></h2>    
+
+                    <br><br>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form }}
+                        <br><br><br><br>
+                        <button type="submit" id="button" class="button" >Classify It</button>
+                    </form>
+                </div>
+            </div>
+          </div>     
     </body>
 
     <!-- Display Image after chosing-->
