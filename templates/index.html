@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Image Classification</title>
+        <title>ClassifyImage.</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +12,13 @@
             * {
                 font-family: 'Poppins', sans-serif;
                 box-sizing: border-box;
+                margin: 0;
             }
 
-            /* Create two unequal columns that floats next to each other */
             .column {
                 float: left;
                 padding: 10px;
-                height: 600px; /* Should be removed. Only for demonstration */
+                height: 600px;
             }
 
             .left {
@@ -29,8 +29,7 @@
                 width: 30%;
                 padding-left: 30px;
             }
-
-            /* Clear floats after the columns */
+            
             .row:after {
                 content: "";
                 display: table;
@@ -112,6 +111,7 @@
             
             <div class="center">
                 {% if image_uri is not None %}
+                    <br><br>
                     <img class="outputImage" src="{{ image_uri }}" width="400" height="400">     
                     <div class="text">It seems to be <b>{{predicted_label}}</b></div>
                 {% else %} 
@@ -122,7 +122,7 @@
                 </div>
             </div>
 
-            <div class="column right" style="background-color:#FAFAFA;">
+            <div class="column right" style="background-color:#000000; color: #FFFFFF;">
                 <div class="vertical-center">
                     <h3>Choose Image to</h3>
                     <h2><b>CLASSIFY</b></h2>    
